@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Today</title>
-
     <style>
       :root {
         --bg-color: #ffffff;
@@ -15,7 +14,6 @@
         --border-color: #ddd;
       }
 
-      /*深色模式的設定*/
       @media (prefers-color-scheme: dark) {
         :root {
           --bg-color: #121212;
@@ -28,53 +26,74 @@
       }
 
       body {
-        /* Flexbox 居中佈局 */
         display: flex;
-        justify-content: center; /*水平居中*/
-        align-items: center; /*垂直居中*/
+        justify-content: center;
+        align-items: center;
         min-height: 100vh;
-        /*其他*/
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         background: var(--bg-color);
         color: var(--text-color);
         margin: 0;
-        padding: 20px; /*手機邊距*/
+        padding: 20px;
         line-height: 1.6;
         transition: background-color 0.3s ease, color 0.3s ease;
       }
 
+      /* 關鍵修正：移除 text-align: center */
       .container {
         width: 100%;
-        max-width: 800px; /*最大寬度限制防止ipad不好看*/
-        text-align: center; /*文字居中*/
+        max-width: 800px;
+        /* 不要寫 text-align: center 在這裡！ */
       }
 
+      /* 標題單獨置中 */
       h1 {
         font-size: 32px;
         margin-bottom: 40px;
         font-weight: 600;
         color: var(--title-color);
+        text-align: center; /* 只在這裡置中 */
       }
+
+      /* 清單完全左對齊 */
       ol {
         display: flex;
         flex-direction: column;
         font-size: 22px;
-        align-items: center;
-        padding-left: 0px;
+        align-items: flex-start; /* 左對齊 */
+        padding-left: 0;
+        margin: 0;
+        text-align: left; /* 確保文字左對齊 */
       }
+
       li {
         margin: 20px 0;
-        text-align: center;
+        text-align: left; /* 左對齊 */
         border-left: 4px solid var(--accent-color);
-        padding: 5px 15px;
+        padding: 12px 20px 12px 30px;
+        width: 100%;
+        box-sizing: border-box;
       }
 
       [contenteditable="true"] {
         outline: none;
       }
+
+      /* 響應式調整 */
+      @media (max-width: 600px) {
+        body {
+          padding: 15px;
+        }
+        h1 {
+          font-size: 28px;
+          margin-bottom: 30px;
+        }
+        ol {
+          font-size: 20px;
+        }
+      }
     </style>
   </head>
-
   <body>
     <div class="container">
       <h1 id="date"></h1>
@@ -87,7 +106,6 @@
     </div>
 
     <script>
-      // show today's date
       const today = new Date();
       const options = {
         weekday: "long",
@@ -100,14 +118,12 @@
         options
       );
 
-      // load saved tasks
       const tasks = document.getElementById("tasks");
       const saved = localStorage.getItem("todayTasks");
       if (saved) {
         tasks.innerHTML = saved;
       }
 
-      // save on change
       tasks.addEventListener("input", () => {
         localStorage.setItem("todayTasks", tasks.innerHTML);
       });
